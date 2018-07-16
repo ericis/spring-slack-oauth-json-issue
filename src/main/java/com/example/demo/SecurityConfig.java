@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
-	private static List<String> clients = Arrays.asList("google", "facebook", "github", "ghe", "slack");
+	private static List<String> clients = Arrays.asList("google", "facebook", "github", "slack");
 
 	private static String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
 
@@ -99,44 +99,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			return CommonOAuth2Provider.GITHUB.getBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
 		}
 
-		if (client.equals("ghe")) {
-
-//			final String clientName = env.getProperty(CLIENT_PROPERTY_KEY + client + ".client-name");
-
-			// final ClientRegistration ghe = ClientRegistration.withRegistrationId(client).
-			// clientAuthenticationMethod(ClientAuthenticationMethod.BASIC).
-			// authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).
-			// redirectUriTemplate("{baseUrl}/{action}/oauth2/code/{registrationId}").
-			// scope("read:user").
-			// authorizationUri("https://ghe.aa.com/login/oauth/authorize").
-			// tokenUri("https://ghe.aa.com/login/oauth/access_token").
-			// userInfoUri("https://ghe.aa.com/api/v3/user").
-			// userNameAttributeName("id").
-			// clientId(clientId).
-			// clientSecret(clientSecret).
-			// clientName(clientName).
-			// build();
-			//
-			// return ghe;
-
-			return this.getAaGheBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
-		}
-
 		if (client.equals("slack")) {
 
 //			final String clientName = env.getProperty(CLIENT_PROPERTY_KEY + client + ".client-name");
 //			final String[] scopes = env.getProperty(CLIENT_PROPERTY_KEY + client + ".scope", String[].class);
 
-			return this.getAaSlackBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
+			return this.getSlackBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
 			
-//			return ClientRegistration.withRegistrationId(client)
-//					.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
-//					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//					.redirectUriTemplate("{baseUrl}/{action}/oauth2/code/{registrationId}").scope(scopes)
-//					.authorizationUri("https://slack.com/oauth/authorize")
-//					.tokenUri("https://slack.com/api/oauth.access").userInfoUri("https://slack.com/api/users.identity")
-//					.userNameAttributeName("id").clientId(clientId).clientSecret(clientSecret).clientName(clientName)
-//					.build();
 		}
 
 		return null;
@@ -144,24 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String DEFAULT_LOGIN_REDIRECT_URL = "{baseUrl}/login/oauth2/code/{registrationId}";
 
-	private Builder getAaGheBuilder(String registrationId) {
-		
-		ClientRegistration.Builder builder = getBuilder(
-				registrationId, 
-				ClientAuthenticationMethod.BASIC,
-				DEFAULT_LOGIN_REDIRECT_URL);
-
-		builder.scope("read:user");
-		builder.authorizationUri("https://ghe.aa.com/login/oauth/authorize");
-		builder.tokenUri("https://ghe.aa.com/login/oauth/access_token");
-		builder.userInfoUri("https://ghe.aa.com/api/v3/user");
-		builder.userNameAttributeName("id");
-		builder.clientName("American Airlines GitHub Enterprise");
-		
-		return builder;
-	}
-
-	private Builder getAaSlackBuilder(String registrationId) {
+	private Builder getSlackBuilder(String registrationId) {
 		
 		ClientRegistration.Builder builder = getBuilder(
 				registrationId, 
@@ -173,7 +125,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		builder.tokenUri("https://api.slack.com/methods/oauth.token");
 		builder.userInfoUri("https://slack.com/api/users.identity");
 		builder.userNameAttributeName("id");
-		builder.clientName("American Airlines Slack");
+		builder.clientName("Slack");
 		
 		return builder;
 	}
