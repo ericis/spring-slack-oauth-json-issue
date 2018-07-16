@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+logging:
+  level:
+    ROOT: INFO
+    com.example.demo: DEBUG
+    org.springframework.security: DEBUG
+    com.nimbusds.oauth2.sdk: DEBUG
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: gx
+            clientSecret: gy
+          facebook:
+            clientId: fx
+            clientSecret: fy
+          github:
+            clientId: ggx
+            clientSecret: ggy
+          slack:
+            clientId: sx
+            clientSecret: sy
